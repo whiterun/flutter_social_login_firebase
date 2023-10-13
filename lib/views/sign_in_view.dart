@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../utils/authentication.dart';
+import '../utils/apple_authentication.dart';
+import '../utils/google_authentication.dart';
+import '../widgets/apple_sign_in_button.dart';
 import '../widgets/google_sign_in_button.dart';
 
 class SignInView extends StatefulWidget {
@@ -43,12 +45,29 @@ class _SignInViewState extends State<SignInView> {
                 ),
               ),
               FutureBuilder(
-                future: Authentication.initializeFirebase(context: context),
+                future:
+                    GoogleAuthentication.initializeFirebase(context: context),
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
                     return const Text('Error initializing Firebase');
                   } else if (snapshot.connectionState == ConnectionState.done) {
                     return const GoogleSignInButton();
+                  }
+                  return const CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      Colors.orange,
+                    ),
+                  );
+                },
+              ),
+              FutureBuilder(
+                future:
+                    AppleAuthentication.initializeFirebase(context: context),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return const Text('Error initializing Firebase');
+                  } else if (snapshot.connectionState == ConnectionState.done) {
+                    return const AppleSignInButton();
                   }
                   return const CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation<Color>(

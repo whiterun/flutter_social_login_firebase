@@ -2,16 +2,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_social_login_firebase/views/user_info_view.dart';
 
-import '../utils/google_authentication.dart';
+import '../utils/apple_authentication.dart';
 
-class GoogleSignInButton extends StatefulWidget {
-  const GoogleSignInButton({super.key});
+class AppleSignInButton extends StatefulWidget {
+  const AppleSignInButton({super.key});
 
   @override
-  State<GoogleSignInButton> createState() => _GoogleSignInButtonState();
+  State<AppleSignInButton> createState() => _AppleSignInButtonState();
 }
 
-class _GoogleSignInButtonState extends State<GoogleSignInButton> {
+class _AppleSignInButtonState extends State<AppleSignInButton> {
   bool _isSigningIn = false;
 
   @override
@@ -36,8 +36,8 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
                   _isSigningIn = true;
                 });
 
-                User? user = await GoogleAuthentication.signInWithGoogle(
-                    context: context);
+                User? user =
+                    await AppleAuthentication.signInWithApple(context: context);
 
                 setState(() {
                   _isSigningIn = false;
@@ -62,7 +62,7 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const <Widget>[
                     Text(
-                      'Sign in with Google',
+                      'Sign in with Apple',
                       style: TextStyle(
                         fontSize: 20,
                         color: Colors.black54,

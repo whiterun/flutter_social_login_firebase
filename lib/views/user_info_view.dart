@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../utils/authentication.dart';
+import '../utils/google_authentication.dart';
 import 'sign_in_view.dart';
 
 class UserInfoView extends StatefulWidget {
@@ -142,7 +142,7 @@ class _UserInfoViewState extends State<UserInfoView> {
                           setState(() {
                             _isSigningOut = true;
                           });
-                          await Authentication.signOut(context: context);
+                          await GoogleAuthentication.signOut(context: context);
                           setState(() {
                             _isSigningOut = false;
                           });

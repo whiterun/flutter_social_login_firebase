@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 
 import '../views/user_info_view.dart';
 
-class Authentication {
+class GoogleAuthentication {
   static Future<FirebaseApp> initializeFirebase(
       {required BuildContext context}) async {
     FirebaseApp firebaseApp = await Firebase.initializeApp();
@@ -84,7 +84,7 @@ class Authentication {
           if (e.code == 'account-exists-with-different-credential') {
             if (context.mounted) {
               ScaffoldMessenger.of(context).showSnackBar(
-                Authentication.customSnackBar(
+                GoogleAuthentication.customSnackBar(
                   content:
                       'The account already exists with a different credential',
                 ),
@@ -93,7 +93,7 @@ class Authentication {
           } else if (e.code == 'invalid-credential') {
             if (context.mounted) {
               ScaffoldMessenger.of(context).showSnackBar(
-                Authentication.customSnackBar(
+                GoogleAuthentication.customSnackBar(
                   content:
                       'Error occurred while accessing credentials. Try again.',
                 ),
@@ -103,7 +103,7 @@ class Authentication {
         } catch (e) {
           if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-              Authentication.customSnackBar(
+              GoogleAuthentication.customSnackBar(
                 content: 'Error occurred using Google Sign In. Try again.',
               ),
             );
@@ -125,7 +125,7 @@ class Authentication {
       await FirebaseAuth.instance.signOut();
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        Authentication.customSnackBar(
+        GoogleAuthentication.customSnackBar(
           content: 'Error signing out. Try again.',
         ),
       );
