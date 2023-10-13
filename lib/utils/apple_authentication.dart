@@ -1,4 +1,6 @@
-// import 'dart:convert';
+import 'dart:convert';
+import 'dart:math';
+import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -36,23 +38,34 @@ class AppleAuthentication {
     FirebaseAuth auth = FirebaseAuth.instance;
     User? user;
 
+    const charset =
+        '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
+    final random = Random.secure();
+    final rawNonce =
+        List.generate(32, (_) => charset[random.nextInt(charset.length)])
+            .join();
+
+    final bytes = utf8.encode(rawNonce);
+    final digest = sha256.convert(bytes);
+    final nonce = digest.toString();
+
     final appleCredential = await SignInWithApple.getAppleIDCredential(scopes: [
       AppleIDAuthorizationScopes.email,
       AppleIDAuthorizationScopes.fullName,
-    ]);
+    ], nonce: nonce);
 
-    final oauthCredential = OAuthProvider("apple.com").credential(
-      idToken: appleCredential.identityToken,
-    );
+    final oauthCredential = OAuthProvider("apple.com")
+        .credential(idToken: appleCredential.identityToken, rawNonce: rawNonce);
 
     try {
       final UserCredential userCredential =
           await auth.signInWithCredential(oauthCredential);
 
       user = userCredential.user;
+      debugPrint(user.toString());
 
       final token = await userCredential.user?.getIdTokenResult();
-      debugPrint(token.toString());
+      debugPrint(token?.token);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'account-exists-with-different-credential') {
         if (context.mounted) {
