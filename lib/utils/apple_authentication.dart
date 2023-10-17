@@ -63,7 +63,10 @@ class AppleAuthentication {
       final UserCredential userCredential =
           await auth.signInWithCredential(oauthCredential);
 
-      /* In case displayName and email from firebase is null */
+      /* 
+       * Fix `displayName` and `email` using data from apple 
+       * Because results from firebase often null
+       * */
       final userDisplayName = [
         appleCredential.givenName ?? '',
         appleCredential.familyName ?? '',
