@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_social_login_firebase/utils/laravel_passport.dart';
+import 'package:flutter_social_login_firebase/widgets/custom_snackbar.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../views/user_info_view.dart';
@@ -27,16 +28,6 @@ class GoogleAuthentication {
     }
 
     return firebaseApp;
-  }
-
-  static SnackBar customSnackBar({required String content}) {
-    return SnackBar(
-      backgroundColor: Colors.black,
-      content: Text(
-        content,
-        style: const TextStyle(color: Colors.redAccent, letterSpacing: 0.5),
-      ),
-    );
   }
 
   static Future<User?> signInWithGoogle({required BuildContext context}) async {
@@ -78,12 +69,12 @@ class GoogleAuthentication {
           user = userCredential.user;
 
           final token = await userCredential.user?.getIdTokenResult();
-          await LaravelPassport.exchangeToken(token?.token, {});
+          await LaravelPassport.exchangeToken('google', token?.token, {});
         } on FirebaseAuthException catch (e) {
           if (e.code == 'account-exists-with-different-credential') {
             if (context.mounted) {
               ScaffoldMessenger.of(context).showSnackBar(
-                GoogleAuthentication.customSnackBar(
+                CustomSnackBar.show(
                   content:
                       'The account already exists with a different credential',
                 ),
@@ -92,7 +83,7 @@ class GoogleAuthentication {
           } else if (e.code == 'invalid-credential') {
             if (context.mounted) {
               ScaffoldMessenger.of(context).showSnackBar(
-                GoogleAuthentication.customSnackBar(
+                CustomSnackBar.show(
                   content:
                       'Error occurred while accessing credentials. Try again.',
                 ),
@@ -102,7 +93,7 @@ class GoogleAuthentication {
         } catch (e) {
           if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-              GoogleAuthentication.customSnackBar(
+              CustomSnackBar.show(
                 content: 'Error occurred using Google Sign In. Try again.',
               ),
             );
@@ -125,7 +116,7 @@ class GoogleAuthentication {
     } catch (e) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          GoogleAuthentication.customSnackBar(
+          CustomSnackBar.show(
             content: 'Error signing out. Try again.',
           ),
         );

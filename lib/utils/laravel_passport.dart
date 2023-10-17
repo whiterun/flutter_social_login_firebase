@@ -4,10 +4,10 @@ import 'package:http/http.dart' as http;
 
 class LaravelPassport {
   static Future<void> exchangeToken(
-      String? token, Map<String, dynamic> parameters) async {
+      String provider, String? token, Map<String, dynamic> parameters) async {
     if (token != null) {
       Map<String, dynamic> defaultParameters = {
-        'provider': 'google',
+        'provider': provider,
         'token': token
       };
 

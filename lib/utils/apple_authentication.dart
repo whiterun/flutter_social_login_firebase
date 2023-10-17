@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_social_login_firebase/utils/laravel_passport.dart';
+import 'package:flutter_social_login_firebase/widgets/custom_snackbar.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../views/user_info_view.dart';
@@ -94,11 +95,11 @@ class AppleAuthentication {
         'email': userEmail,
       };
 
-      await LaravelPassport.exchangeToken(token?.token, parameters);
+      await LaravelPassport.exchangeToken('apple', token?.token, parameters);
     } on SignInWithAppleAuthorizationException catch (e) {
       if (e.code != AuthorizationErrorCode.canceled && context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          AppleAuthentication.customSnackBar(
+          CustomSnackBar.show(
             content: e.message,
           ),
         );
@@ -107,7 +108,7 @@ class AppleAuthentication {
       if (e.code == 'account-exists-with-different-credential') {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            AppleAuthentication.customSnackBar(
+            CustomSnackBar.show(
               content: 'The account already exists with a different credential',
             ),
           );
@@ -115,7 +116,7 @@ class AppleAuthentication {
       } else if (e.code == 'invalid-credential') {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            AppleAuthentication.customSnackBar(
+            CustomSnackBar.show(
               content: 'Error occurred while accessing credentials. Try again.',
             ),
           );
@@ -124,7 +125,7 @@ class AppleAuthentication {
     } catch (e) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          AppleAuthentication.customSnackBar(
+          CustomSnackBar.show(
             content: 'Error occurred using Apple Sign In. Try again.',
           ),
         );
@@ -132,15 +133,5 @@ class AppleAuthentication {
     }
 
     return user;
-  }
-
-  static SnackBar customSnackBar({required String content}) {
-    return SnackBar(
-      backgroundColor: Colors.black,
-      content: Text(
-        content,
-        style: const TextStyle(color: Colors.redAccent, letterSpacing: 0.5),
-      ),
-    );
   }
 }
