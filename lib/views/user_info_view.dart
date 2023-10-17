@@ -65,7 +65,7 @@ class _UserInfoViewState extends State<UserInfoView> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Row(),
+              const Row(),
               _user.photoURL != null
                   ? ClipOval(
                       child: Material(

@@ -27,12 +27,12 @@ class _SignInViewState extends State<SignInView> {
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
-              Row(),
-              Expanded(
+              const Row(),
+              const Expanded(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const <Widget>[
+                  children: <Widget>[
                     SizedBox(height: 20),
                     Text(
                       'Authentication',
