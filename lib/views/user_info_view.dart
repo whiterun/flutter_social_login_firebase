@@ -116,7 +116,7 @@ class _UserInfoViewState extends State<UserInfoView> {
               ),
               const SizedBox(height: 24.0),
               const Text(
-                'You are now signed in using your Google account. To sign out of your account click the "Sign Out" button below.',
+                'To sign out of your account click the "Sign Out" button below.',
                 style: TextStyle(
                     color: Colors.white, fontSize: 14, letterSpacing: 0.2),
               ),
